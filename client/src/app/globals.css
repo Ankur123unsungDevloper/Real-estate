@@ -1,0 +1,162 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* =========================
+  THEME (v4 system)
+========================= */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --radius-md: var(--radius);
+}
+
+/* =========================
+  ROOT VARIABLES
+========================= */
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+
+  --primary: oklch(0.922 0 0);
+
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+
+  --border: oklch(1 0 0 / 10%);
+}
+
+/* =========================
+  BASE
+========================= */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    @apply border-border outline-ring/50;
+  }
+
+  html,
+  body,
+  #root,
+  .app {
+    height: 100%;
+    width: 100%;
+    @apply text-sm bg-background text-foreground;
+  }
+
+  html {
+    @apply font-sans;
+  }
+}
+
+/* =========================
+  DASHBOARD
+========================= */
+.dashboard-container {
+  @apply pt-8 pb-5 px-8;
+}
+
+/* =========================
+  MAPBOX (FIXED)
+========================= */
+
+.mapboxgl-popup-content {
+  background-color: oklch(var(--primary));
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.marker-popup {
+  background-color: oklch(var(--primary));
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.marker-popup-image {
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: cover;
+  background: white;
+  border-radius: 0.5rem;
+}
+
+.marker-popup-price {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: oklch(var(--muted-foreground));
+}
+
+.marker-popup-title {
+  cursor: pointer;
+}
+
+.marker-popup-title:hover {
+  text-decoration: underline;
+}
+
+.marker-popup-price-unit {
+  font-size: 0.75rem;
+}
+
+/* =========================
+  SCROLLBAR
+========================= */
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(var(--muted));
+  border-radius: 3px;
+}
+
+/* =========================
+  AMPLIFY FIX (SAFE)
+========================= */
+
+[data-amplify-authenticator] {
+  --amplify-components-button-primary-background-color: oklch(var(--primary));
+}
+
+/* =========================
+  SONNER
+========================= */
+
+[data-close-button="true"] {
+  @apply bg-background border-border text-foreground;
+}
