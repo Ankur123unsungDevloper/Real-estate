@@ -1,13 +1,12 @@
 import Link from "next/link";
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faFacebook,
-  faInstagram,
-  faTwitter,
-  faLinkedin,
-  faYoutube,
-} from "@fortawesome/free-brands-svg-icons";
+  FaFacebook,
+  FaInstagram,
+  FaLinkedin,
+  FaTwitter,
+  FaYoutube
+} from "react-icons/fa";
 
 const FooterSection = () => {
   return (
@@ -44,27 +43,27 @@ const FooterSection = () => {
               aria-label="Facebook"
               className="hover:text-primary-600"
             >
-              <FontAwesomeIcon icon={faFacebook} className="h-6 w-6" />
+              <FaFacebook className="h-6 w-6" />
             </a>
             <a
               href="#"
               aria-label="Instagram"
               className="hover:text-primary-600"
             >
-              <FontAwesomeIcon icon={faInstagram} className="h-6 w-6" />
+              <FaInstagram className="h-6 w-6" />
             </a>
             <a href="#" aria-label="Twitter" className="hover:text-primary-600">
-              <FontAwesomeIcon icon={faTwitter} className="h-6 w-6" />
+              <FaTwitter className="h-6 w-6" />
             </a>
             <a
               href="#"
               aria-label="Linkedin"
               className="hover:text-primary-600"
             >
-              <FontAwesomeIcon icon={faLinkedin} className="h-6 w-6" />
+              <FaLinkedin className="h-6 w-6" />
             </a>
             <a href="#" aria-label="Youtube" className="hover:text-primary-600">
-              <FontAwesomeIcon icon={faYoutube} className="h-6 w-6" />
+              <FaYoutube className="h-6 w-6" />
             </a>
           </div>
         </div>

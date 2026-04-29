@@ -56,7 +56,7 @@ const HeroSection = () => {
         className="object-cover object-center"
         priority
       />
-      <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+      <div className="absolute inset-0 bg-black/60"></div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

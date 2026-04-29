@@ -8,7 +8,12 @@ import { Button } from "./ui/button";
 import { useGetAuthUserQuery } from "@/state/api";
 import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "aws-amplify/auth";
-import { Bell, MessageCircle, Plus, Search } from "lucide-react";
+import {
+  Bell,
+  MessageCircle,
+  Plus,
+  Search
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +21,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage
+} from "./ui/avatar";
 import { SidebarTrigger } from "./ui/sidebar";
 
 const Navbar = () => {
@@ -46,7 +55,7 @@ const Navbar = () => {
           )}
           <Link
             href="/"
-            className="cursor-pointer hover:!text-primary-300"
+            className="cursor-pointer hover:text-primary-300!"
             scroll={false}
           >
             <div className="flex items-center gap-3">
@@ -59,7 +68,7 @@ const Navbar = () => {
               />
               <div className="text-xl font-bold">
                 RENT
-                <span className="text-secondary-500 font-light hover:!text-primary-300">
+                <span className="text-secondary-500 font-light hover:text-primary-300!">
                   IFUL
                 </span>
               </div>
@@ -124,7 +133,7 @@ const Navbar = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-white text-primary-700">
                   <DropdownMenuItem
-                    className="cursor-pointer hover:!bg-primary-700 hover:!text-primary-100 font-bold"
+                    className="cursor-pointer hover:bg-primary-700! hover:text-primary-100! font-bold"
                     onClick={() =>
                       router.push(
                         authUser.userRole?.toLowerCase() === "manager"
@@ -138,7 +147,7 @@ const Navbar = () => {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-primary-200" />
                   <DropdownMenuItem
-                    className="cursor-pointer hover:!bg-primary-700 hover:!text-primary-100"
+                    className="cursor-pointer hover:bg-primary-700! hover:text-primary-100!"
                     onClick={() =>
                       router.push(
                         `/${authUser.userRole?.toLowerCase()}s/settings`,
@@ -149,7 +158,7 @@ const Navbar = () => {
                     Settings
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    className="cursor-pointer hover:!bg-primary-700 hover:!text-primary-100"
+                    className="cursor-pointer hover:bg-primary-700! hover:text-primary-100!"
                     onClick={handleSignOut}
                   >
                     Sign out
