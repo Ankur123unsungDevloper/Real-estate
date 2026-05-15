@@ -8,7 +8,7 @@
     "dev": "tsx watch src/index.ts",
     "seed": "tsx prisma/seed.ts",
     "prisma:generate": "prisma generate",
-    "postprisma:generate": "shx cp -r node_modules/.prisma/client/index.d.ts ../client/src/types/prismaTypes.d.ts"
+    "postprisma:generate": "shx cp -r src/generated/prisma ../client/src/types/prisma"
   },
   "keywords": [],
   "author": "",
@@ -39,7 +39,6 @@
     "@types/node": "^22.13.0",
     "@types/pg": "^8.20.0",
     "@types/terraformer__wkt": "^2.0.3",
-    "@types/uuid": "^10.0.0",
     "concurrently": "^9.2.1",
     "nodemon": "^3.1.10",
     "prisma": "^7.8.0",
