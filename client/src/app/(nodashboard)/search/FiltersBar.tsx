@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/select";
 import { PropertyTypeIcons } from "@/lib/constants";
 
+type FilterValue = string | number | null | [number | null, number | null] | [number, number];
+
 const FiltersBar = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -34,13 +36,13 @@ const FiltersBar = () => {
   const [searchInput, setSearchInput] = useState(filters.location);
 
   const updateURL = debounce((newFilters: FiltersState) => {
-    const cleanFilters = cleanParams(newFilters);
+    const cleanFilters = cleanParams(newFilters as unknown as Record<string, unknown>);
     const updatedSearchParams = new URLSearchParams();
 
     Object.entries(cleanFilters).forEach(([key, value]) => {
       updatedSearchParams.set(
         key,
-        Array.isArray(value) ? value.join(",") : value.toString()
+        Array.isArray(value) ? value.join(",") : String(value)
       );
     });
 
@@ -49,20 +51,20 @@ const FiltersBar = () => {
 
   const handleFilterChange = (
     key: string,
-    value: any,
+    value: FilterValue,
     isMin: boolean | null
   ) => {
-    let newValue = value;
+    let newValue: FilterValue = value;
 
     if (key === "priceRange" || key === "squareFeet") {
-      const currentArrayRange = [...filters[key]];
+      const currentArrayRange = [...filters[key as keyof Pick<FiltersState, "priceRange" | "squareFeet">]] as [number | null, number | null];
       if (isMin !== null) {
         const index = isMin ? 0 : 1;
         currentArrayRange[index] = value === "any" ? null : Number(value);
       }
       newValue = currentArrayRange;
     } else if (key === "coordinates") {
-      newValue = value === "any" ? [0, 0] : value.map(Number);
+      newValue = value === "any" ? [0, 0] : (value as number[]).map(Number) as [number, number];
     } else {
       newValue = value === "any" ? "any" : value;
     }
@@ -81,7 +83,7 @@ const FiltersBar = () => {
           process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
         }&fuzzyMatch=true`
       );
-      const data = await response.json();
+      const data = await response.json() as { features: { center: [number, number] }[] };
       if (data.features && data.features.length > 0) {
         const [lng, lat] = data.features[0].center;
         dispatch(
@@ -132,9 +134,8 @@ const FiltersBar = () => {
 
         {/* Price Range */}
         <div className="flex gap-1">
-          {/* Minimum Price Selector */}
           <Select
-            value={filters.priceRange[0]?.toString() || "any"}
+            value={filters.priceRange[0]?.toString() ?? "any"}
             onValueChange={(value) =>
               handleFilterChange("priceRange", value, true)
             }
@@ -154,9 +155,8 @@ const FiltersBar = () => {
             </SelectContent>
           </Select>
 
-          {/* Maximum Price Selector */}
           <Select
-            value={filters.priceRange[1]?.toString() || "any"}
+            value={filters.priceRange[1]?.toString() ?? "any"}
             onValueChange={(value) =>
               handleFilterChange("priceRange", value, false)
             }
@@ -179,7 +179,6 @@ const FiltersBar = () => {
 
         {/* Beds and Baths */}
         <div className="flex gap-1">
-          {/* Beds */}
           <Select
             value={filters.beds}
             onValueChange={(value) => handleFilterChange("beds", value, null)}
@@ -196,7 +195,6 @@ const FiltersBar = () => {
             </SelectContent>
           </Select>
 
-          {/* Baths */}
           <Select
             value={filters.baths}
             onValueChange={(value) => handleFilterChange("baths", value, null)}
@@ -215,7 +213,7 @@ const FiltersBar = () => {
 
         {/* Property Type */}
         <Select
-          value={filters.propertyType || "any"}
+          value={filters.propertyType ?? "any"}
           onValueChange={(value) =>
             handleFilterChange("propertyType", value, null)
           }
