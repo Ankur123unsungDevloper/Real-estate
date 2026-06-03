@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import Navbar from "@/components/Navbar";
@@ -43,7 +44,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         <div style={{ marginTop: `${NAVBAR_HEIGHT}px` }}>
           <main className="flex">
             <Sidebar userType={authUser.userRole.toLowerCase()} />
-            <div className="flex-grow transition-all duration-300">
+            <div className="grow transition-all duration-300">
               {children}
             </div>
           </main>

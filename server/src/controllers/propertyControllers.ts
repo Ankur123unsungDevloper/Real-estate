@@ -251,7 +251,6 @@ export const createProperty = async (
           ]
         : [0, 0];
 
-    // ✅ Fix: don't destructure — access index after query to guard undefined
     const locationResult = await prisma.$queryRaw<Location[]>`
       INSERT INTO "Location" (address, city, state, country, "postalCode", coordinates)
       VALUES (${address}, ${city}, ${state}, ${country}, ${postalCode}, ST_SetSRID(ST_MakePoint(${longitude}, ${latitude}), 4326))

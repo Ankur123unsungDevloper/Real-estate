@@ -41,7 +41,7 @@ export const createTenant = async (
     });
 
     res.status(201).json(tenant);
-  } catch (error: unknown) {                                     // ✅ Fix: any → unknown
+  } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
     res.status(500).json({ message: `Error creating tenant: ${message}` });
   }
@@ -52,7 +52,7 @@ export const updateTenant = async (
   res: Response
 ): Promise<void> => {
   try {
-    const cognitoId = String(req.params["cognitoId"]);           // ✅ Fix: plain string
+    const cognitoId = String(req.params["cognitoId"]);
     const { name, email, phoneNumber } = req.body;
 
     const updateTenant = await prisma.tenant.update({
@@ -61,7 +61,7 @@ export const updateTenant = async (
     });
 
     res.json(updateTenant);
-  } catch (error: unknown) {                                     // ✅ Fix: any → unknown
+  } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
     res.status(500).json({ message: `Error updating tenant: ${message}` });
   }
@@ -72,24 +72,23 @@ export const getCurrentResidences = async (
   res: Response
 ): Promise<void> => {
   try {
-    const cognitoId = String(req.params["cognitoId"]);           // ✅ Fix: plain string
+    const cognitoId = String(req.params["cognitoId"]);
 
     const rawProperties = await prisma.property.findMany({
       where: { tenants: { some: { cognitoId } } },
       include: { location: true },
     });
 
-    // ✅ Fix: cast to typed array so property in map is not implicit any
     const properties = rawProperties as unknown as PropertyWithLocation[];
 
     const residencesWithFormattedLocation = await Promise.all(
-      properties.map(async (property: PropertyWithLocation) => {  // ✅ Fix: explicit type
+      properties.map(async (property: PropertyWithLocation) => {
         const coordinates: { coordinates: string }[] =
           await prisma.$queryRaw`SELECT ST_asText(coordinates) as coordinates from "Location" where id = ${property.location.id}`;
 
         const geoJSON = wktToGeoJSON(
           coordinates[0]?.coordinates ?? ""
-        ) as unknown as { coordinates: [number, number] };        // ✅ Fix: any → typed cast
+        ) as unknown as { coordinates: [number, number] };
 
         const longitude = geoJSON.coordinates[0];
         const latitude = geoJSON.coordinates[1];
@@ -105,7 +104,7 @@ export const getCurrentResidences = async (
     );
 
     res.json(residencesWithFormattedLocation);
-  } catch (err: unknown) {                                        // ✅ Fix: any → unknown
+  } catch (err: unknown) {                     
     const message = err instanceof Error ? err.message : "Unknown error";
     res.status(500).json({ message: `Error retrieving residences: ${message}` });
   }
@@ -116,8 +115,10 @@ export const addFavoriteProperty = async (
   res: Response
 ): Promise<void> => {
   try {
-    const cognitoId = String(req.params["cognitoId"]);            // ✅ Fix: plain string
-    const propertyId = String(req.params["propertyId"]);          // ✅ Fix: plain string
+    const cognitoId = String(req.params["cognitoId"]);
+    
+    const propertyId = String(req.params["propertyId"]);
+    
 
     const tenant = await prisma.tenant.findUnique({
       where: { cognitoId },
@@ -132,7 +133,7 @@ export const addFavoriteProperty = async (
     const propertyIdNumber = Number(propertyId);
     const existingFavorites = tenant.favorites ?? [];
 
-    // ✅ Fix: fav typed as { id: number } — favorites is Property[] from Prisma
+    
     if (!existingFavorites.some((fav: { id: number }) => fav.id === propertyIdNumber)) {
       const updatedTenant = await prisma.tenant.update({
         where: { cognitoId },
@@ -143,7 +144,8 @@ export const addFavoriteProperty = async (
     } else {
       res.status(409).json({ message: "Property already added as favorite" });
     }
-  } catch (error: unknown) {                                      // ✅ Fix: any → unknown
+  } catch (error: unknown) {
+    
     const message = error instanceof Error ? error.message : "Unknown error";
     res.status(500).json({ message: `Error adding favorite property: ${message}` });
   }
@@ -154,8 +156,10 @@ export const removeFavoriteProperty = async (
   res: Response
 ): Promise<void> => {
   try {
-    const cognitoId = String(req.params["cognitoId"]);            // ✅ Fix: plain string
-    const propertyId = String(req.params["propertyId"]);          // ✅ Fix: plain string
+    const cognitoId = String(req.params["cognitoId"]);
+    
+    const propertyId = String(req.params["propertyId"]);
+    
     const propertyIdNumber = Number(propertyId);
 
     const updatedTenant = await prisma.tenant.update({
@@ -165,7 +169,8 @@ export const removeFavoriteProperty = async (
     });
 
     res.json(updatedTenant);
-  } catch (err: unknown) {                                        // ✅ Fix: any → unknown
+  } catch (err: unknown) {
+    
     const message = err instanceof Error ? err.message : "Unknown error";
     res.status(500).json({ message: `Error removing favorite property: ${message}` });
   }
