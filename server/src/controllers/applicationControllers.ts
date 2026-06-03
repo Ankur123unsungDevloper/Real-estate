@@ -151,8 +151,7 @@ export const createApplication = async (
           name,
           email,
           phoneNumber,
-          // ✅ Fix: convert undefined → null for Prisma optional fields
-          // exactOptionalPropertyTypes requires null not undefined for nullable DB fields
+          
           message: message ?? null,
           property: {
             connect: { id: propertyId },
@@ -193,7 +192,7 @@ export const updateApplicationStatus = async (
     const { status } = req.body as { status: string };
     console.log("status:", status);
 
-    // Validate and cast string → ApplicationStatus enum
+    
     if (!Object.values(ApplicationStatus).includes(status as ApplicationStatus)) {
       res.status(400).json({ message: `Invalid application status: ${status}` });
       return;
