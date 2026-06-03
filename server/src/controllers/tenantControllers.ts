@@ -1,16 +1,17 @@
 import { Request, Response } from "express";
-import { prisma } from "../lib/prisma";                          // ✅ Fix: shared instance
+import { prisma } from "../lib/prisma";
 import { wktToGeoJSON } from "@terraformer/wkt";
-import { Prisma } from "../generated/prisma/client";             // ✅ Fix: for PropertyWithLocation type
+import { Prisma } from "../generated/prisma/client";
 
-// ✅ Fix: explicit type for property in map callback
+
 type PropertyWithLocation = Prisma.PropertyGetPayload<{
   include: { location: true };
 }>;
 
 export const getTenant = async (req: Request, res: Response): Promise<void> => {
   try {
-    const cognitoId = String(req.params["cognitoId"]);           // ✅ Fix: plain string
+    const cognitoId = String(req.params["cognitoId"]);
+    
     const tenant = await prisma.tenant.findUnique({
       where: { cognitoId },
       include: { favorites: true },
@@ -21,7 +22,8 @@ export const getTenant = async (req: Request, res: Response): Promise<void> => {
     } else {
       res.status(404).json({ message: "Tenant not found" });
     }
-  } catch (error: unknown) {                                     // ✅ Fix: any → unknown
+  } catch (error: unknown) {
+
     const message = error instanceof Error ? error.message : "Unknown error";
     res.status(500).json({ message: `Error retrieving tenant: ${message}` });
   }

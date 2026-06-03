@@ -5,9 +5,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// ✅ Fix 2: Use a wider type that accepts FiltersState
-// FiltersState has no index signature so Record<string, CleanParamValue> won't accept it
-// Using Record<string, unknown> and filtering inside is the correct approach
 export const cleanParams = (
   params: Record<string, unknown>
 ): Record<string, unknown> => {
@@ -23,7 +20,7 @@ export const cleanParams = (
 };
 
 export const formatPriceValue = (
-  value: number | null | undefined, // ✅ Fix 3: accept undefined too
+  value: number | null | undefined,
   isMin: boolean
 ): string => {
   if (value === null || value === undefined) {

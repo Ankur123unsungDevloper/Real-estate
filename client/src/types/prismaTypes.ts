@@ -75,6 +75,7 @@ export interface Manager {
   name: string;
   email: string;
   phoneNumber: string;
+  image?: string;
   managedProperties?: Property[];
 }
 
@@ -83,6 +84,7 @@ export interface Tenant {
   cognitoId: string;
   name: string;
   email: string;
+  image?: string;
   phoneNumber: string;
   properties?: Property[];
   favorites?: Property[];
