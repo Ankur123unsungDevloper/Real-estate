@@ -16,7 +16,7 @@ const ImagePreviews = ({ images }: ImagePreviewsProps) => {
   };
 
   return (
-    <div className="relative h-[450px] w-full">
+    <div className="relative h-112.5 w-full">
       {images.map((image, index) => (
         <div
           key={image}
