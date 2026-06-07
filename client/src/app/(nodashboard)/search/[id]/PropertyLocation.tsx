@@ -21,16 +21,16 @@ const PropertyLocation = ({ propertyId }: PropertyDetailsProps) => {
       container: mapContainerRef.current!,
       style: "mapbox://styles/majesticglue/cm6u301pq008b01sl7yk1cnvb",
       center: [
-        property.location.coordinates.longitude,
-        property.location.coordinates.latitude,
+        property.location?.coordinates?.longitude ?? 0,
+        property.location?.coordinates?.latitude ?? 0,
       ],
       zoom: 14,
     });
 
     const marker = new mapboxgl.Marker()
       .setLngLat([
-        property.location.coordinates.longitude,
-        property.location.coordinates.latitude,
+        property.location?.coordinates?.longitude ?? 0,
+        property.location?.coordinates?.latitude ?? 0,
       ])
       .addTo(map);
 
@@ -72,7 +72,7 @@ const PropertyLocation = ({ propertyId }: PropertyDetailsProps) => {
         </a>
       </div>
       <div
-        className="relative mt-4 h-[300px] rounded-lg overflow-hidden"
+        className="relative mt-4 h-75 rounded-lg overflow-hidden"
         ref={mapContainerRef}
       />
     </div>
