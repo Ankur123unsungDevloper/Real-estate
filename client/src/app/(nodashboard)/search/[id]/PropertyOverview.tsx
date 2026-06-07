@@ -2,6 +2,11 @@ import { useGetPropertyQuery } from "@/state/api";
 import { MapPin, Star } from "lucide-react";
 import React from "react";
 
+// ✅ Fix 1: missing props interface
+interface PropertyOverviewProps {
+  propertyId: number;
+}
+
 const PropertyOverview = ({ propertyId }: PropertyOverviewProps) => {
   const {
     data: property,
@@ -34,7 +39,8 @@ const PropertyOverview = ({ propertyId }: PropertyOverviewProps) => {
           <div className="flex justify-between items-center gap-3">
             <span className="flex items-center text-yellow-500">
               <Star className="w-4 h-4 mr-1 fill-current" />
-              {property.averageRating.toFixed(1)} ({property.numberOfReviews}{" "}
+              {/* ✅ Fix 2: averageRating and numberOfReviews are possibly null/undefined */}
+              {(property.averageRating ?? 0).toFixed(1)} ({property.numberOfReviews ?? 0}{" "}
               Reviews)
             </span>
             <span className="text-green-600">Verified Listing</span>
@@ -93,7 +99,7 @@ const PropertyOverview = ({ propertyId }: PropertyOverviewProps) => {
           room, adjacent to our internet and coffee lounge. Conveniently located
           near beautiful local beaches with easy access to the 110, 405 and 91
           freeways, exclusive shopping at the largest mall in the Western United
-          States “The Del Amo Fashion Center” to the hospital of your choice,
+          States &quot;The Del Amo Fashion Center&quot; to the hospital of your choice,
           Kaiser Hospital, UCLA Harbor Medical Center, Torrance Memorial Medical
           Center, and Providence Little Company of Mary Hospital Torrance rated
           one of the top 10 Best in Los Angeles. Contact us today to tour and
