@@ -3,13 +3,12 @@ import { Mail, MapPin, PhoneCall } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 
-// ✅ Fix 1: missing props interface
 interface ApplicationCardProps {
   application: Application & {
     lease?: {
       startDate: string;
       endDate: string;
-      nextPaymentDate?: string; // ✅ Fix 4: computed field added here
+      nextPaymentDate?: string;
     } | null;
   };
   userType: "manager" | "renter";
@@ -22,7 +21,6 @@ const ApplicationCard = ({
   children,
 }: ApplicationCardProps) => {
   const [imgSrc, setImgSrc] = useState(
-    // ✅ Fix 2: property is possibly undefined
     application.property?.photoUrls?.[0] ?? "/placeholder.jpg"
   );
 
@@ -33,7 +31,7 @@ const ApplicationCard = ({
       ? "bg-red-500"
       : "bg-yellow-500";
 
-  // ✅ Fix 3: manager doesn't exist on Application — it comes from property.manager
+  
   const contactPerson =
     userType === "manager" ? application.tenant : application.property?.manager;
 
