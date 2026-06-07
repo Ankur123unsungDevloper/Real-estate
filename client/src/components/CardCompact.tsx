@@ -2,6 +2,16 @@ import { Bath, Bed, Heart, House, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
+import { Property } from "@/types/prismaTypes";
+
+// ✅ Fix 1: Define props interface — was missing entirely
+interface CardCompactProps {
+  property: Property;
+  isFavorite: boolean;
+  onFavoriteToggle: () => void;
+  showFavoriteButton?: boolean;
+  propertyLink?: string;
+}
 
 const CardCompact = ({
   property,
@@ -11,7 +21,7 @@ const CardCompact = ({
   propertyLink,
 }: CardCompactProps) => {
   const [imgSrc, setImgSrc] = useState(
-    property.photoUrls?.[0] || "/placeholder.jpg"
+    property.photoUrls?.[0] ?? "/placeholder.jpg"
   );
 
   return (
@@ -72,11 +82,12 @@ const CardCompact = ({
           </p>
           <div className="flex text-sm items-center">
             <Star className="w-3 h-3 text-yellow-400 mr-1" />
+            {/* ✅ Fix 2: averageRating is possibly null/undefined — use nullish coalescing */}
             <span className="font-semibold">
-              {property.averageRating.toFixed(1)}
+              {(property.averageRating ?? 0).toFixed(1)}
             </span>
             <span className="text-gray-600 ml-1">
-              ({property.numberOfReviews})
+              ({property.numberOfReviews ?? 0})
             </span>
           </div>
         </div>
@@ -95,7 +106,6 @@ const CardCompact = ({
               {property.squareFeet}
             </span>
           </div>
-
           <p className="text-base font-bold">
             ${property.pricePerMonth.toFixed(0)}
             <span className="text-gray-600 text-xs font-normal"> /mo</span>
