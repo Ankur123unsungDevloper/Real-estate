@@ -61,10 +61,10 @@ const Map = () => {
 
 const createPropertyMarker = (property: Property, map: mapboxgl.Map) => {
   const marker = new mapboxgl.Marker()
-    .setLngLat([
-      property.location.coordinates.longitude,
-      property.location.coordinates.latitude,
-    ])
+  .setLngLat([
+    property.location?.coordinates?.longitude ?? 0,
+    property.location?.coordinates?.latitude ?? 0,
+  ])
     .setPopup(
       new mapboxgl.Popup().setHTML(
         `

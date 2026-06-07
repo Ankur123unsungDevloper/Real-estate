@@ -2,8 +2,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AmenityIcons, HighlightIcons } from "@/lib/constants";
 import { formatEnumString } from "@/lib/utils";
 import { useGetPropertyQuery } from "@/state/api";
+// ✅ Fix: import actual types from prismaTypes instead of using global AmenityEnum/HighlightEnum
+import { Amenity, Highlight } from "@/types/prismaTypes";
 import { HelpCircle } from "lucide-react";
 import React from "react";
+
+// ✅ Fix: missing props interface
+interface PropertyDetailsProps {
+  propertyId: number;
+}
 
 const PropertyDetails = ({ propertyId }: PropertyDetailsProps) => {
   const {
@@ -23,8 +30,9 @@ const PropertyDetails = ({ propertyId }: PropertyDetailsProps) => {
       <div>
         <h2 className="text-xl font-semibold my-3">Property Amenities</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {property.amenities.map((amenity: AmenityEnum) => {
-            const Icon = AmenityIcons[amenity as AmenityEnum] || HelpCircle;
+          {/* ✅ Fix: use Amenity type instead of AmenityEnum */}
+          {property.amenities.map((amenity: Amenity) => {
+            const Icon = AmenityIcons[amenity] || HelpCircle;
             return (
               <div
                 key={amenity}
@@ -46,9 +54,9 @@ const PropertyDetails = ({ propertyId }: PropertyDetailsProps) => {
           Highlights
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-4 w-full">
-          {property.highlights.map((highlight: HighlightEnum) => {
-            const Icon =
-              HighlightIcons[highlight as HighlightEnum] || HelpCircle;
+          {/* ✅ Fix: use Highlight type instead of HighlightEnum */}
+          {property.highlights.map((highlight: Highlight) => {
+            const Icon = HighlightIcons[highlight] || HelpCircle;
             return (
               <div
                 key={highlight}
