@@ -30,13 +30,13 @@ const FiltersFull = () => {
   );
 
   const updateURL = debounce((newFilters: FiltersState) => {
-    const cleanFilters = cleanParams(newFilters);
+    const cleanFilters = cleanParams(newFilters as unknown as Record<string, unknown>);
     const updatedSearchParams = new URLSearchParams();
 
     Object.entries(cleanFilters).forEach(([key, value]) => {
       updatedSearchParams.set(
         key,
-        Array.isArray(value) ? value.join(",") : value.toString()
+        Array.isArray(value) ? value.join(",") : String(value)
       );
     });
 
@@ -152,12 +152,13 @@ const FiltersFull = () => {
               localFilters.priceRange[0] ?? 0,
               localFilters.priceRange[1] ?? 10000,
             ]}
-            onValueChange={(value: any) =>
+            onValueChange={(value) => {
+              const arr = Array.isArray(value) ? value : [value];
               setLocalFilters((prev) => ({
                 ...prev,
-                priceRange: value as [number, number],
-              }))
-            }
+                priceRange: [arr[0] ?? 0, arr[1] ?? 10000] as [number, number],
+              }));
+            }}
           />
           <div className="flex justify-between mt-2">
             <span>${localFilters.priceRange[0] ?? 0}</span>
@@ -172,7 +173,7 @@ const FiltersFull = () => {
             <Select
               value={localFilters.beds || "any"}
               onValueChange={(value) =>
-                setLocalFilters((prev) => ({ ...prev, beds: value }))
+              setLocalFilters((prev) => ({ ...prev, beds: value === "any" ? "" : String(value ?? "") }))
               }
             >
               <SelectTrigger className="w-full rounded-xl">
@@ -192,7 +193,7 @@ const FiltersFull = () => {
             <Select
               value={localFilters.baths || "any"}
               onValueChange={(value) =>
-                setLocalFilters((prev) => ({ ...prev, baths: value }))
+              setLocalFilters((prev) => ({ ...prev, baths: value === "any" ? "" : String(value ?? "") }))
               }
             >
               <SelectTrigger className="w-full rounded-xl">
