@@ -37,7 +37,6 @@ const PaymentMethod = () => {
       <p className="mb-4">Change how you pay for your plan.</p>
       <div className="border rounded-lg p-6">
         <div>
-          {/* Card Info */}
           <div className="flex gap-10">
             <div className="w-36 h-20 bg-blue-600 flex items-center justify-center rounded-md">
               <span className="text-white text-2xl font-bold">VISA</span>
@@ -61,7 +60,6 @@ const PaymentMethod = () => {
               </div>
             </div>
           </div>
-
           <hr className="my-4" />
           <div className="flex justify-end">
             <button className="bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-md flex items-center justify-center hover:bg-primary-700 hover:text-primary-50">
@@ -84,21 +82,19 @@ const ResidenceCard = ({
 }) => {
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden p-6 flex-1 flex flex-col justify-between">
-      {/* Header */}
       <div className="flex gap-5">
         <div className="w-64 h-32 object-cover bg-slate-500 rounded-xl"></div>
-
         <div className="flex flex-col justify-between">
           <div>
             <div className="bg-green-500 w-fit text-white px-4 py-1 rounded-full text-sm font-semibold">
               Active Leases
             </div>
-
             <h2 className="text-2xl font-bold my-2">{property.name}</h2>
             <div className="flex items-center mb-2">
               <MapPin className="w-5 h-5 mr-1" />
+              {/* ✅ Fix: location is possibly undefined — use optional chaining */}
               <span>
-                {property.location.city}, {property.location.country}
+                {property.location?.city}, {property.location?.country}
               </span>
             </div>
           </div>
@@ -108,7 +104,6 @@ const ResidenceCard = ({
           </div>
         </div>
       </div>
-      {/* Dates */}
       <div>
         <hr className="my-4" />
         <div className="flex justify-between items-center">
@@ -135,7 +130,6 @@ const ResidenceCard = ({
         </div>
         <hr className="my-4" />
       </div>
-      {/* Buttons */}
       <div className="flex justify-end gap-2 w-full">
         <button className="bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-md flex items-center justify-center hover:bg-primary-700 hover:text-primary-50">
           <User className="w-5 h-5 mr-2" />
@@ -153,7 +147,6 @@ const ResidenceCard = ({
 const BillingHistory = ({ payments }: { payments: Payment[] }) => {
   return (
     <div className="mt-8 bg-white rounded-xl shadow-md overflow-hidden p-6">
-      {/* Header */}
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold mb-1">Billing History</h2>
@@ -240,7 +233,7 @@ const Residence = () => {
     { skip: !authUser?.cognitoInfo?.userId }
   );
   const { data: payments, isLoading: paymentsLoading } = useGetPaymentsQuery(
-    leases?.[0]?.id || 0,
+    leases?.[0]?.id ?? 0,
     { skip: !leases?.[0]?.id }
   );
 
@@ -260,7 +253,7 @@ const Residence = () => {
           )}
           <PaymentMethod />
         </div>
-        <BillingHistory payments={payments || []} />
+        <BillingHistory payments={payments ?? []} />
       </div>
     </div>
   );

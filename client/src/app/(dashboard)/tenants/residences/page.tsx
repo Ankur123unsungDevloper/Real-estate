@@ -8,12 +8,13 @@ import {
   useGetCurrentResidencesQuery,
   useGetTenantQuery,
 } from "@/state/api";
+import { Property } from "@/types/prismaTypes";
 import React from "react";
 
 const Residences = () => {
   const { data: authUser } = useGetAuthUserQuery();
   const { data: tenant } = useGetTenantQuery(
-    authUser?.cognitoInfo?.userId || "",
+    authUser?.cognitoInfo?.userId ?? "",
     {
       skip: !authUser?.cognitoInfo?.userId,
     }
@@ -23,7 +24,7 @@ const Residences = () => {
     data: currentResidences,
     isLoading,
     error,
-  } = useGetCurrentResidencesQuery(authUser?.cognitoInfo?.userId || "", {
+  } = useGetCurrentResidencesQuery(authUser?.cognitoInfo?.userId ?? "", {
     skip: !authUser?.cognitoInfo?.userId,
   });
 
@@ -41,7 +42,11 @@ const Residences = () => {
           <Card
             key={property.id}
             property={property}
-            isFavorite={tenant?.favorites.includes(property.id) || false}
+            isFavorite={
+              tenant?.favorites?.some(
+                (fav: Property) => fav.id === property.id
+              ) ?? false
+            }
             onFavoriteToggle={() => {}}
             showFavoriteButton={false}
             propertyLink={`/tenants/residences/${property.id}`}
