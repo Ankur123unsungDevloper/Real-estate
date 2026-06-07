@@ -101,17 +101,17 @@ const PropertyTenants = () => {
                       <div className="flex items-center space-x-3">
                         <Image
                           src="/landing-i1.png"
-                          alt={lease.tenant.name}
+                          alt={lease.tenant?.name ?? ""}
                           width={40}
                           height={40}
                           className="rounded-full"
                         />
                         <div>
                           <div className="font-semibold">
-                            {lease.tenant.name}
+                            {lease.tenant?.name ?? ""}
                           </div>
                           <div className="text-sm text-gray-500">
-                            {lease.tenant.email}
+                            {lease.tenant?.email ?? ""}
                           </div>
                         </div>
                       </div>
@@ -137,7 +137,7 @@ const PropertyTenants = () => {
                         {getCurrentMonthPaymentStatus(lease.id)}
                       </span>
                     </TableCell>
-                    <TableCell>{lease.tenant.phoneNumber}</TableCell>
+                    <TableCell>{lease.tenant?.phoneNumber ?? ""}</TableCell>
                     <TableCell>
                       <button
                         className={`border border-gray-300 text-gray-700 py-2 px-4 rounded-md flex 
